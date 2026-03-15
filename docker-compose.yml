@@ -1,0 +1,18 @@
+name: curso_platzi
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: curso_platzi_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: curso_platzi
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
