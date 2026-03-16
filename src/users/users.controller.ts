@@ -23,7 +23,7 @@ export class UsersController {
   // Obtener usuario por id
   @Get(':id')
   getUserById(@Param('id') id: string) {
-    return this.userService.getUserById(id);
+    return this.userService.getUserById(+id);
   }
 
   // Crear usuario
@@ -35,12 +35,12 @@ export class UsersController {
   // Editar usuario
   @Put(':id')
   updateUser(@Param('id') id: string, @Body() changues: UpdateUserDto) {
-    return this.userService.update(id, changues);
+    return this.userService.update(+id, changues);
   }
 
   // Borrar usuario por id
   @Delete(':id')
   DeleteUser(@Param('id') id: string) {
-    return this.userService.delete(id);
+    return this.userService.delete(+id);
   }
 }
