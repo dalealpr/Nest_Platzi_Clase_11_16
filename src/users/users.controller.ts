@@ -26,6 +26,12 @@ export class UsersController {
     return this.userService.getUserById(+id);
   }
 
+  // Obtener profile por id usuario
+  @Get(':id/profile')
+  getProfile(@Param('id') id: string) {
+    return this.userService.getProfileByUserId(+id);
+  }
+
   // Crear usuario
   @Post()
   CreateUser(@Body() body: CreateUserDto) {

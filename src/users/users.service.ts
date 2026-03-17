@@ -38,19 +38,35 @@ export class UsersService {
   }
 
   async update(id: number, changes: UpdateUserDto) {
-    const user = await this._findOne(id);
-    const updatedUser = this.userRepository.merge(user, changes);
-    return updatedUser;
+    try {
+      const user = await this._findOne(id);
+      const updatedUser = this.userRepository.merge(user, changes);
+      const savedUser = await this.userRepository.save(updatedUser);
+      return savedUser;
+    } catch (error) {
+      throw new BadRequestException('Error updating user', error);
+    }
   }
 
   async delete(id: number) {
+    try {
+      await this.userRepository.delete(id);
+      return { message: `User id:${id} deleted` };
+    } catch (error) {
+      throw new BadRequestException('Error deleting user', error);
+    }
+  }
+
+  async getProfileByUserId(id: number) {
     const user = await this._findOne(id);
-    await this.userRepository.delete(user.id);
-    return { message: `User id:${id} deleted` };
+    return user.profile;
   }
 
   private async _findOne(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['profile'],
+    });
     if (!user) {
       throw new NotFoundException(`User with id: ${id} not found`);
     }
